@@ -9,7 +9,7 @@ MySQL Database required
 
 Changes will take a bit to be synced on the whole network
 
-Icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flaticon.com](https://www.flaticon.com/))
+Icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flaticon.com](https://www.flaticon.com/)
 
 ## Features
 
