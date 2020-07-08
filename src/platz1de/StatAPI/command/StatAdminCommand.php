@@ -102,7 +102,7 @@ class StatAdminCommand extends CommandBase
 			case "setmodulename":
 				if (count($args) > 2 and ($module = $this->getPlugin()->getModule($args[1], false)) instanceof Module) {
 					$module->setDisplayName($args[2]);
-					$sender->sendMessage(StatAPI::getPrefix() . str_replace(["{module}", "{displayName}"], [$module->getName(), $args[2]], StatAPI::getInstance()->getConfig()->get("statadmin-module-shown", "The display name of stat '{stat}' of module '{module}' was set to '{displayName}'!")));
+					$sender->sendMessage(StatAPI::getPrefix() . str_replace(["{module}", "{displayName}"], [$module->getName(), $args[2]], StatAPI::getInstance()->getConfig()->get("statadmin-module-setname", "The display name of stat '{stat}' of module '{module}' was set to '{displayName}'!")));
 				} else {
 					$sender->sendMessage(StatAPI::getPrefix() . str_replace(["{module}"], [$args[1] ?? ""], StatAPI::getInstance()->getConfig()->get("statadmin-module-unknown", "The module '{module}' doesn't exists!")));
 				}
@@ -110,7 +110,7 @@ class StatAdminCommand extends CommandBase
 			case "setstatname":
 				if (count($args) > 3 and ($stat = $this->getPlugin()->getStat($args[2], $this->getPlugin()->getModule($args[1]))) instanceof Stat) {
 					$stat->setDisplayName($args[3]);
-					$sender->sendMessage(StatAPI::getPrefix() . str_replace(["{module}", "{stat}", "{displayName}"], [$stat->getModule()->getName(), $stat->getName(), $args[3]], StatAPI::getInstance()->getConfig()->get("statadmin-stat-shown", "The score of {player} in stat '{stat}' of module '{module}' was set to {score}!")));
+					$sender->sendMessage(StatAPI::getPrefix() . str_replace(["{module}", "{stat}", "{displayName}"], [$stat->getModule()->getName(), $stat->getName(), $args[3]], StatAPI::getInstance()->getConfig()->get("statadmin-stat-setname", "The score of {player} in stat '{stat}' of module '{module}' was set to {score}!")));
 				} else {
 					$sender->sendMessage(StatAPI::getPrefix() . str_replace(["{module}", "{stat}"], [$args[1] ?? "", $args[2] ?? ""], StatAPI::getInstance()->getConfig()->get("statadmin-stat-unknown", "The stat '{stat}' of module '{module}' doesn't exists!")));
 				}
