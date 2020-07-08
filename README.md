@@ -1,14 +1,15 @@
-#StatAPI
+# StatAPI
 
 A simple API to manage stats on your server network using [libasynql](https://github.com/poggit/libasynql)<br>
 MySQL Database required
 
-###Disclaimer
+### Disclaimer
+
 **This is just an API, a plugin for basic stats may be following**
 
 Changes will take a bit to be synced on the whole network
 
-##Features
+## Features
 
 * see and change the stats of every player
 * create unlimited modules to hold your stats, normally you want to have one module for every gamemode
@@ -18,7 +19,7 @@ Changes will take a bit to be synced on the whole network
 * hide stats or modules for normal players
 * sync your stats on different servers
 
-##Commands
+## Commands
 
 Aliases, Usage and Descriptions can be changed in the config
 
@@ -28,7 +29,7 @@ stats|/stats [module/player] [player/module]|See the stats of a player that are 
 leaderboard|/leaderboard [module] <stat> [page]|See the leaderboard of a stat
 statadmin|/statadmin <subcommand> [args]|Manage your stats manually
 
-##Usage
+## Usage
 get a module (or create it if it doesn't exist)
 ```php
 $module = \platz1de\StatAPI\Module::get("myEpicModule");
@@ -73,7 +74,7 @@ get the score of a player
 $stat->getScore("somePlayer");
 ```
 
-###Advanced Usage
+### Advanced Usage
 
 set a display type (for most stats you don't need this step; default: DISPLAY_RAW)
 
