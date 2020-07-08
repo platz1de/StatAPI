@@ -1,0 +1,20 @@
+name: StatAPI
+main: platz1de\StatAPI\StatAPI
+api: 3.0.0
+version: 1.0.0
+author: platz1de
+permissions:
+  statapi:
+    default: op
+    children:
+      statapi.command:
+        default: op
+        children:
+          statapi.command.stats:
+            default: true
+          statapi.command.leaderboard:
+            default: true
+          statapi.command.statadmin:
+            default: op
+      statapi.seeall:
+        default: op

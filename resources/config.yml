@@ -1,0 +1,102 @@
+---
+#Never change this
+version: 1
+
+database:
+  # The database type. Currently only "mysql" is supported
+  type: mysql
+
+  mysql:
+    host: 127.0.0.1
+    # Avoid using the "root" user for security reasons.
+    username: root
+    password: ""
+    schema: your_schema
+  # The maximum number of simultaneous SQL queries
+  # Recommended: 2. You may want to further increase this value if your MySQL connection is very slow.
+  worker-limit: 2
+
+#Name of the module of this server
+server-module: "default"
+
+#when the scores should be reloaded; default: 1200 (each minute)
+reload-duration: 1200
+
+prefix: "§4Stats §f> "
+
+command-stats-description: "See the stats of an user"
+command-stats-usage: "/stats [module] [player]\n/stats [player] [module]"
+command-stats-aliases: ["stat"]
+
+command-leaderboard-description: "See the leaderboard of a stat"
+command-leaderboard-usage: "/leaderboard [module] <stat> [page]"
+command-leaderboard-aliases: ["top", "ldb"]
+
+command-statadmin-description: "Manage your stats"
+command-statadmin-usage: "/statadmin"
+command-statadmin-aliases: []
+
+#Args: {player} {module}
+stats-header: "§e{player}'s stats in {module}:"
+
+#Args: {stat} {value} {position}
+stats-list: "§e{stat}: §r{value} §7(#{position})"
+
+#Args: {module} {stat} {page} {pages}
+leaderboard-header: "§eLeaderboard of {module} - {stat}: §7[Page {page}/{pages}]"
+
+#Args: {position} {player} {score}
+leaderboard-list: "§1#{position}§r - §e{player}§r: {score}"
+
+#Args: {modules}
+statadmin-modules: "§eList of all modules:§r\n{modules}"
+
+#Args: {module} {stats}
+statadmin-stats: "§eList of all stats of module '{module}':§r\n{stats}"
+
+#Args: {module}
+statadmin-module-unknown: "The module '{module}' doesn't exists!"
+statadmin-module-has-stats: "The module '{module}' still has stats!"
+statadmin-module-deleted: "The module '{module}' was deleted!"
+statadmin-module-hidden: "The module '{module}' was hidden!"
+statadmin-module-shown: "The module '{module}' was shown!"
+
+#Args: {module} {displayName}
+statadmin-module-setname: "The display name of module '{module}' was set to '{displayName}'!"
+
+#Args: {module} {stat}
+statadmin-stat-unknown: "The stat '{stat}' of module '{module}' doesn't exists!"
+statadmin-stat-deleted: "The stat '{stat}' of module '{module}' was deleted!"
+statadmin-stat-reseted: "The stat '{stat}' of module '{module}' was reset!"
+statadmin-stat-hidden: "The stat '{stat}' of module '{module}' was hidden!"
+statadmin-stat-shown: "The stat '{stat}' of module '{module}' was shown!"
+
+#Args: {module} {stat} {displayName}
+statadmin-stat-setname: "The display name of stat '{stat}' of module '{module}' was set to '{displayName}'!"
+
+#Args: {player}
+statadmin-stat-resetscore: "The scores of {player} were reset!"
+
+#Args: {module} {stat} {player} {score}
+statadmin-stat-setscore: "The score of {player} in stat '{stat}' of module '{module}' was set to {score}!"
+
+#Args: {module} {stat} {position}
+statadmin-stat-ranked: "The position of stat '{stat}' of module '{module}' was changed by {position}"
+
+statadmin-help:
+  - "§eList of all statadmin subcommands:"
+  - "§emodules§r - show a list of all modules"
+  - "§estats <module>§r - show stats of a module"
+  - "§edeletemodule <module>§r - delete a module"
+  - "§edeletestat <module> <stat>§r - deletes a stat"
+  - "§ehidemodule <module>§r - hide a module"
+  - "§eshowmodule <module>§r - show a module"
+  - "§ehidestat <module> <stat>§r - hide a stat"
+  - "§eshowstat <module> <stat>§r - show a stat"
+  - "§esetmodulename <module> <displayName>§r - set the display name of a module"
+  - "§esetstatname <module> <stat> <displayName>§r - set the display name of a stat"
+  - "§eresetstat <module> <stat>§r - resets the data of a stat"
+  - "§eresetscores <player>§r - resets all scores for the player"
+  - "§esetscore <module> <stat> <player> <score>§r - set the score of a player"
+  - "§erankstat <module> <stat> <position>§r - change the position of the stat, position has to be relative (1 -> 1 up, -1 -> 1 down)"
+...
