@@ -1,0 +1,11 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/platz1de/StatAPI
+build-by-default: true
+branches:
+- master
+projects:
+  StatAPI:
+    path: ""
+    libs:
+      - src: poggit/libasynql/libasynql
+        version: ^3.3.0
+...
