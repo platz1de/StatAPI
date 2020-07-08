@@ -130,9 +130,9 @@ class Stat
 	}
 
 	/**
-	 * @return int
+	 * @return string
 	 */
-	public function getDisplayType(): int
+	public function getDisplayType(): string
 	{
 		return $this->displayName === "" ? $this->name : $this->displayName;
 	}
