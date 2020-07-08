@@ -1,6 +1,6 @@
 # StatAPI
 
-A simple API to manage stats on your server network using [libasynql](https://github.com/poggit/libasynql)<br>
+A simple API to manage stats on your server network using [libasynql](https://github.com/poggit/libasynql) <br>
 MySQL Database required
 
 ### Disclaimer
@@ -8,6 +8,8 @@ MySQL Database required
 **This is just an API, a plugin for basic stats may be following**
 
 Changes will take a bit to be synced on the whole network
+
+Icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flaticon.com](https://www.flaticon.com/))
 
 ## Features
 
@@ -115,4 +117,3 @@ get the formatted score of a player (ready to send as a message)
 /** @var $stat \platz1de\StatAPI\Stat */
 $stat->getFormatedScore("somePlayer");
 ```
-
