@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS data
     stat   VARCHAR(255),
     module VARCHAR(255),
     score  VARCHAR(255),
-    PRIMARY KEY (player, stat)
+    PRIMARY KEY (player, stat, module)
 );
 -- #        }
 -- #    }
