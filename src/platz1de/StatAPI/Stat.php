@@ -249,16 +249,16 @@ class Stat
 				return date(StatAPI::getInstance()->getConfig()->get("date-format", "d M Y, H:i"), $score);
 			case self::DISPLAY_DURATION_MINUTES:
 				$hours = floor($score / 60);
-				$minutes = $score % 60;
+				$minutes = sprintf("%02d", $score % 60);
 				return str_replace(["{hours}", "{minutes}"], [$hours, $minutes], StatAPI::getInstance()->getConfig()->get("duration-minutes-format", "{hours}h {minutes}min"));
 			case self::DISPLAY_DURATION:
 				$minutes = floor($score / 60);
-				$seconds = $score % 60;
+				$seconds = sprintf("%02d", $score % 60);
 				return str_replace(["{minutes}", "{seconds}"], [$minutes, $seconds], StatAPI::getInstance()->getConfig()->get("duration-format", "{minutes}min {seconds}s"));
 			case self::DISPLAY_DURATION_MICRO:
 				$minutes = floor(($score % (1000 * 60 * 60)) / (1000 * 60));
-				$seconds = floor(($score % (1000 * 60)) / 1000);
-				$microseconds = $score % 1000;
+				$seconds = sprintf("%02d", floor(($score % (1000 * 60)) / 1000));
+				$microseconds = sprintf("%03d", $score % 1000);
 				return str_replace(["{minutes}", "{seconds}", "{microseconds}"], [$minutes, $seconds, $microseconds], StatAPI::getInstance()->getConfig()->get("duration-micro-format", "{minutes}:{seconds}:{microseconds}"));
 			case self::DISPLAY_RAW:
 			default:
