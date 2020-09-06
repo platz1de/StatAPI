@@ -99,7 +99,7 @@ class StatAPI extends PluginBase
 		$match = null;
 		foreach ($this->modules as $module) {
 			if ($match === null or strlen($match) > strlen($module->getName()) or strlen($match) > strlen($module->getDisplayName())) {
-				if (substr(strtolower($module->getName()), 0, strlen($name)) === $name or substr(strtolower($module->getDisplayName()), 0, strlen($name)) === $name) {
+				if (substr(strtolower($module->getName()), 0, strlen($name)) === strtolower($name) or substr(strtolower($module->getDisplayName()), 0, strlen($name)) === strtolower($name)) {
 					$match = $module;
 				}
 			}
@@ -137,7 +137,7 @@ class StatAPI extends PluginBase
 		$match = null;
 		foreach ($module->getStats() as $stat) {
 			if ($match === null or strlen($match) > strlen($stat->getName()) or strlen($match) > strlen($stat->getDisplayName())) {
-				if (substr(strtolower($stat->getName()), 0, strlen($name)) === $name or substr(strtolower($stat->getDisplayName()), 0, strlen($name)) === $name) {
+				if (substr(strtolower($stat->getName()), 0, strlen($name)) === strtolower($name) or substr(strtolower($stat->getDisplayName()), 0, strlen($name)) === strtolower($name)) {
 					$match = $stat;
 				}
 			}
