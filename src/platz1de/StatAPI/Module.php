@@ -12,7 +12,7 @@ class Module
 	 */
 	public static function get(string $name): Module
 	{
-		if (($module = StatAPI::getInstance()->getModule($name)) instanceof Module) {
+		if (($module = StatAPI::getInstance()->getModule($name)) instanceof self) {
 			return $module;
 		}
 

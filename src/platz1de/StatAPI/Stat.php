@@ -15,7 +15,7 @@ class Stat
 	 */
 	public static function get(string $name, Module $module): Stat
 	{
-		if (($stat = StatAPI::getInstance()->getStat($name, $module)) instanceof Stat) {
+		if (($stat = StatAPI::getInstance()->getStat($name, $module)) instanceof self) {
 			return $stat;
 		}
 
@@ -229,7 +229,7 @@ class Stat
 	 */
 	public function getScore(string $player): string
 	{
-		if($this->getType() === Stat::TYPE_RATIO){
+		if($this->getType() === self::TYPE_RATIO){
 			return $this->data[strtolower($player)] ?? "0"; //default is used for saving the used stats
 		}
 
@@ -288,7 +288,7 @@ class Stat
 			throw new InvalidArgumentException("Non-numerical score for numerical Stat given");
 		}
 
-		if ($this->getType() === Stat::TYPE_RATIO) {
+		if ($this->getType() === self::TYPE_RATIO) {
 			//we don't have to save values for these
 			return;
 		}
@@ -326,7 +326,7 @@ class Stat
 			throw new InvalidArgumentException("Non-numerical score for numerical Stat given");
 		}
 
-		if ($save and $this->getDisplayType() !== Stat::TYPE_RATIO) { //we don't have to save values for these
+		if ($save and $this->getDisplayType() !== self::TYPE_RATIO) { //we don't have to save values for these
 			StatAPI::getInstance()->getDatabase()->executeChange(Query::SET_SCORE, ["player" => $player, "stat" => $this->getName(), "module" => $this->getModule()->getName(), "score" => $score]);
 		}
 
@@ -361,13 +361,13 @@ class Stat
 	public function sort(): void
 	{
 		switch ($this->getType()) {
-			case Stat::TYPE_RATIO: //TODO: Here could lowest be best
-			case Stat::TYPE_INCREASE:
-			case Stat::TYPE_HIGHEST:
+			case self::TYPE_RATIO: //TODO: Here could lowest be best
+			case self::TYPE_INCREASE:
+			case self::TYPE_HIGHEST:
 				arsort($this->data);
 				break;
-			case Stat::TYPE_DECREASE:
-			case Stat::TYPE_LOWEST:
+			case self::TYPE_DECREASE:
+			case self::TYPE_LOWEST:
 				asort($this->data);
 				break;
 		}
