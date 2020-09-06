@@ -133,11 +133,11 @@ class Stat
 	}
 
 	/**
-	 * @return string
+	 * @return int
 	 */
-	public function getDisplayType(): string
+	public function getDisplayType(): int
 	{
-		return $this->displayName === "" ? $this->name : $this->displayName;
+		return $this->displayType;
 	}
 
 	/**
@@ -229,7 +229,7 @@ class Stat
 	 */
 	public function getScore(string $player): string
 	{
-		if($this->getDisplayType() === Stat::TYPE_RATIO){
+		if($this->getType() === Stat::TYPE_RATIO){
 			return $this->data[strtolower($player)] ?? "0"; //default is used for saving the used stats
 		}
 
@@ -288,7 +288,7 @@ class Stat
 			throw new InvalidArgumentException("Non-numerical score for numerical Stat given");
 		}
 
-		if ($this->getDisplayType() === Stat::TYPE_RATIO) {
+		if ($this->getType() === Stat::TYPE_RATIO) {
 			//we don't have to save values for these
 			return;
 		}
