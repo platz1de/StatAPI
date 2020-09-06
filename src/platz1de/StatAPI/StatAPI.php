@@ -166,7 +166,7 @@ class StatAPI extends PluginBase
 				$pos = 0;
 				foreach ($rows as $row) {
 					if (($module = $this->getModule($row["module"])) instanceof Module) {
-						$module->addStat(new Stat($row["name"], $module, $row["type"] ?? 0, $row["displayType"] ?? 0, $row["default"] ?? "0", $row["displayName"] ?? "", $row["visible"] ?? true));
+						$module->addStat(new Stat($row["name"], $module, $row["type"] ?? 0, $row["displayType"] ?? 0, $row["defaultValue"] ?? "0", $row["displayName"] ?? "", $row["visible"] ?? true));
 					}
 					//clear holes in positions
 					$this->getDatabase()->executeChange(Query::SET_STAT_POSITION, ["stat" => $row["name"], "module" => $row["module"], "position" => ++$pos]);
