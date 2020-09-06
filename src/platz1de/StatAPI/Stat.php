@@ -271,17 +271,16 @@ class Stat
 	 * Change score according to type
 	 * @param string $player
 	 * @param string $score
-	 * @param bool $save
 	 * @see setScore for setting score
 	 */
-	public function changeScore(string $player, string $score, bool $save = true): void
+	public function changeScore(string $player, string $score): void
 	{
 		if ($this->type !== self::TYPE_UNKNOWN and !is_numeric($score)) {
 			throw new InvalidArgumentException("Non-numerical score for numerical Stat given");
 		}
 		switch ($this->getType()) {
 			case self::TYPE_UNKNOWN:
-				$this->setScore($player, $score, $save);
+				$this->setScore($player, $score);
 				return;
 			case self::TYPE_INCREASE:
 				StatAPI::getInstance()->getDatabase()->executeChange(Query::INCREASE_SCORE, ["player" => $player, "stat" => $this->getName(), "module" => $this->getModule()->getName(), "score" => $score]);
