@@ -32,6 +32,9 @@ class Stat
 	const TYPE_HIGHEST = 3; //highest score saved; highest score shown on top of the leaderboard
 	const TYPE_LOWEST = 4; //lowest score saved; lowest score shown on top of the leaderboard
 
+	//These don't have real values
+	const TYPE_RATIO = 10; //divides one stat by another stat; stats saved in default value and split by '//'; stats have to be from the same module; for example 'kills//deaths'; ignores displaytype
+
 	const DISPLAY_RAW = 0; //shows the score
 	const DISPLAY_LARGE = 1; //converts the score into a large number Format (eg. 8M, 21k...)
 	const DISPLAY_DATE = 2; //converts the score into a date; in seconds, see time()
@@ -226,6 +229,10 @@ class Stat
 	 */
 	public function getScore(string $player): string
 	{
+		if($this->getDisplayType() === Stat::TYPE_RATIO){
+			return $this->data[strtolower($player)] ?? "0"; //default is used for saving the used stats
+		}
+
 		return $this->data[strtolower($player)] ?? $this->default;
 	}
 
@@ -236,9 +243,11 @@ class Stat
 	public function getFormatedScore(string $player): string
 	{
 		$score = $this->getScore($player);
-		if (!is_numeric($score)) {
+
+		if (!is_numeric($score) or $this->getType() === self::TYPE_RATIO) {
 			return $score;
 		}
+
 		switch ($this->displayType) {
 			case self::DISPLAY_LARGE:
 				$size = ceil(strlen($score) / 3) - 1;
@@ -278,6 +287,12 @@ class Stat
 		if ($this->type !== self::TYPE_UNKNOWN and !is_numeric($score)) {
 			throw new InvalidArgumentException("Non-numerical score for numerical Stat given");
 		}
+
+		if ($this->getDisplayType() === Stat::TYPE_RATIO) {
+			//we don't have to save values for these
+			return;
+		}
+
 		switch ($this->getType()) {
 			case self::TYPE_UNKNOWN:
 				$this->setScore($player, $score);
@@ -311,7 +326,7 @@ class Stat
 			throw new InvalidArgumentException("Non-numerical score for numerical Stat given");
 		}
 
-		if ($save) {
+		if ($save and $this->getDisplayType() !== Stat::TYPE_RATIO) { //we don't have to save values for these
 			StatAPI::getInstance()->getDatabase()->executeChange(Query::SET_SCORE, ["player" => $player, "stat" => $this->getName(), "module" => $this->getModule()->getName(), "score" => $score]);
 		}
 
@@ -346,6 +361,7 @@ class Stat
 	public function sort(): void
 	{
 		switch ($this->getType()) {
+			case Stat::TYPE_RATIO: //TODO: Here could lowest be best
 			case Stat::TYPE_INCREASE:
 			case Stat::TYPE_HIGHEST:
 				arsort($this->data);

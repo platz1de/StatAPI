@@ -52,6 +52,7 @@ TYPE_INCREASE | adds score to current score; highest score shown on top of the l
 TYPE_DECREASE | subtracts score from current score; lowest score shown on top of the leaderboard
 TYPE_HIGHEST | highest score saved; highest score shown on top of the leaderboard
 TYPE_LOWEST | lowest score saved; lowest score shown on top of the leaderboard
+TYPE_RATIO | [Ratio Stats](#ratio-stats)
 
 ```php
 /** @var $stat \platz1de\StatAPI\Stat */
@@ -116,4 +117,24 @@ get the formatted score of a player (ready to send as a message)
 ```php
 /** @var $stat \platz1de\StatAPI\Stat */
 $stat->getFormatedScore("somePlayer");
+```
+
+#### Ratio Stats
+
+Ratio stats are stats that just divide one stat by another stat<br>
+useful for things like kill-death-ratio (K/D)
+
+set the ratio type
+```php
+/** @var $stat \platz1de\StatAPI\Stat */
+$stat->setType(\platz1de\StatAPI\Stat::TYPE_RATIO);
+```
+
+set the stats that should be divided, they have to be split by "//"<br>
+for example "kills//deaths"<br>
+they have to be part of the same module
+
+```php
+/** @var $stat \platz1de\StatAPI\Stat */
+$stat->setDefault("kills//deaths");
 ```

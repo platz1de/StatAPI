@@ -192,6 +192,18 @@ class StatAPI extends PluginBase
 			}
 			foreach ($this->modules as $module) {
 				foreach ($module->getStats() as $stat) {
+					if ($stat->getType() === Stat::TYPE_RATIO) {
+						$first = $this->getStat(explode("//", $stat->getDefault())[0], $module);
+						$second = $this->getStat(explode("//", $stat->getDefault())[1] ?? "", $module);
+
+						if ($first instanceof Stat and $first->getType() !== Stat::TYPE_RATIO and $second instanceof Stat and $second->getType() !== Stat::TYPE_RATIO) { //Don't allow recursive ratio stat, so we don't have to deal with the possible problems
+							foreach (array_unique(array_merge(array_keys($first->getData()), array_keys($second->getData()))) as $player) {
+								$stat->setScore($player, ((int)$first->getScore($player)) / max(1, (int)$second->getScore($player)), false);
+							}
+						}else{
+							$this->getLogger()->warning("Couldn't find stats for ratio-Stat '" . $stat->getName() . "' (" . $stat->getDefault() . ")");
+						}
+					}
 					$stat->sort();
 				}
 			}
