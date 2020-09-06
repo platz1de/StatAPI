@@ -17,13 +17,13 @@ class Stat
 	{
 		if (($stat = StatAPI::getInstance()->getStat($name, $module)) instanceof Stat) {
 			return $stat;
-		} else {
-			StatAPI::getInstance()->getDatabase()->executeInsert(Query::REGISTER_STAT, ["stat" => $name, "module" => $module->getName()], function (int $insertId, int $affectedRows) use ($name, $module): void {
-				$module->addStat(new Stat($name, $module));
-			});
-			StatAPI::getInstance()->getDatabase()->waitAll();
-			return StatAPI::getInstance()->getStat($name, $module);
 		}
+
+		StatAPI::getInstance()->getDatabase()->executeInsert(Query::REGISTER_STAT, ["stat" => $name, "module" => $module->getName()], function (int $insertId, int $affectedRows) use ($name, $module): void {
+			$module->addStat(new Stat($name, $module));
+		});
+		StatAPI::getInstance()->getDatabase()->waitAll();
+		return StatAPI::getInstance()->getStat($name, $module);
 	}
 
 	const TYPE_UNKNOWN = 0; //sets the score; no leaderboard available
@@ -68,7 +68,7 @@ class Stat
 	 */
 	private $visible;
 	/**
-	 * @var array
+	 * @var string[]
 	 */
 	private $data = [];
 
@@ -210,7 +210,10 @@ class Stat
 	}
 
 	/**
+	 * Returns an array with all known scores associated with their owner, playernames are lowercase
 	 * @return array
+	 * @see getScore for getting Score of a Player
+	 * @see getFormatedScore for getting formatted Score of a Player
 	 */
 	public function getData(): array
 	{
@@ -219,18 +222,18 @@ class Stat
 
 	/**
 	 * @param string $player
-	 * @return mixed
+	 * @return string
 	 */
-	public function getScore(string $player)
+	public function getScore(string $player): string
 	{
 		return $this->data[strtolower($player)] ?? $this->default;
 	}
 
 	/**
 	 * @param string $player
-	 * @return mixed
+	 * @return string
 	 */
-	public function getFormatedScore(string $player)
+	public function getFormatedScore(string $player): string
 	{
 		$score = $this->getScore($player);
 		if (!is_numeric($score)) {
@@ -341,7 +344,7 @@ class Stat
 		$this->data = [];
 	}
 
-	public function sort()
+	public function sort(): void
 	{
 		switch ($this->getType()) {
 			case Stat::TYPE_INCREASE:

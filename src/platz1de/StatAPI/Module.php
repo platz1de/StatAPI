@@ -14,13 +14,13 @@ class Module
 	{
 		if (($module = StatAPI::getInstance()->getModule($name)) instanceof Module) {
 			return $module;
-		} else {
-			StatAPI::getInstance()->getDatabase()->executeInsert(Query::REGISTER_MODULE, ["module" => $name], function (int $insertId, int $affectedRows) use ($name): void {
-				StatAPI::getInstance()->registerModule(new Module($name));
-			});
-			StatAPI::getInstance()->getDatabase()->waitAll();
-			return StatAPI::getInstance()->getModule($name);
 		}
+
+		StatAPI::getInstance()->getDatabase()->executeInsert(Query::REGISTER_MODULE, ["module" => $name], function (int $insertId, int $affectedRows) use ($name): void {
+			StatAPI::getInstance()->registerModule(new Module($name));
+		});
+		StatAPI::getInstance()->getDatabase()->waitAll();
+		return StatAPI::getInstance()->getModule($name);
 	}
 
 	/**
@@ -111,6 +111,7 @@ class Module
 
 	/**
 	 * @param Stat $stat
+	 * @internal
 	 */
 	public function addStat(Stat $stat): void
 	{
@@ -127,7 +128,10 @@ class Module
 		}
 	}
 
-	public function resetStats()
+	/**
+	 * @internal
+	 */
+	public function resetStats(): void
 	{
 		$this->stats = [];
 	}

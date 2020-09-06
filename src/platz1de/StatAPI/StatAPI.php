@@ -25,7 +25,7 @@ class StatAPI extends PluginBase
 	 */
 	private $modules = [];
 
-	public function onLoad()
+	public function onLoad(): void
 	{
 		self::$instance = $this;
 		$this->loadConfig(1);
@@ -47,16 +47,20 @@ class StatAPI extends PluginBase
 		return self::$instance;
 	}
 
-	public static function getPrefix()
+	/**
+	 * @return string
+	 */
+	public static function getPrefix(): string
 	{
-		self::getInstance()->getConfig()->get("prefix", "§4Stats §f> ");
+		return self::getInstance()->getConfig()->get("prefix", "§4Stats §f> ");
 	}
 
 	/**
 	 * @param Module $module
-	 * @internal use Module::get
+	 * @internal use Module::get instead
+	 * @see Module::get
 	 */
-	public function registerModule(Module $module)
+	public function registerModule(Module $module): void
 	{
 		$this->modules[strtolower($module->getName())] = $module;
 	}
@@ -65,7 +69,7 @@ class StatAPI extends PluginBase
 	 * @param Module $module
 	 * @internal
 	 */
-	public function unregisterModule(Module $module)
+	public function unregisterModule(Module $module): void
 	{
 		unset($this->modules[strtolower($module->getName())]);
 	}
@@ -73,7 +77,7 @@ class StatAPI extends PluginBase
 	/**
 	 * @return Module
 	 */
-	public function getDefaultModule()
+	public function getDefaultModule(): Module
 	{
 		return Module::get($this->getConfig()->get("server-module", "default"));
 	}
@@ -82,28 +86,31 @@ class StatAPI extends PluginBase
 	 * @param string $name
 	 * @param bool $exact
 	 * @return Module|null
+	 *
+	 * Only returns Module if it exists
+	 * @see Module::get to create a Module
 	 */
-	public function getModule(string $name, bool $exact = true)
+	public function getModule(string $name, bool $exact = true): ?Module
 	{
 		if ($exact) {
 			return $this->modules[strtolower($name)] ?? null;
-		} else {
-			$match = null;
-			foreach ($this->modules as $module) {
-				if ($match === null or strlen($match) > strlen($module->getName()) or strlen($match) > strlen($module->getDisplayName())) {
-					if (substr(strtolower($module->getName()), 0, strlen($name)) === $name or substr(strtolower($module->getDisplayName()), 0, strlen($name)) === $name) {
-						$match = $module;
-					}
+		}
+
+		$match = null;
+		foreach ($this->modules as $module) {
+			if ($match === null or strlen($match) > strlen($module->getName()) or strlen($match) > strlen($module->getDisplayName())) {
+				if (substr(strtolower($module->getName()), 0, strlen($name)) === $name or substr(strtolower($module->getDisplayName()), 0, strlen($name)) === $name) {
+					$match = $module;
 				}
 			}
-			return $match;
 		}
+		return $match;
 	}
 
 	/**
 	 * @return Module[]
 	 */
-	public function getModules()
+	public function getModules(): array
 	{
 		return $this->modules;
 	}
@@ -113,28 +120,32 @@ class StatAPI extends PluginBase
 	 * @param null|Module $module
 	 * @param bool $exact
 	 * @return Stat|null
+	 *
+	 * Only returns Stat if it exists
+	 * @see Stat::get to create a Stat
 	 */
-	public function getStat(string $name, ?Module $module = null, bool $exact = true)
+	public function getStat(string $name, ?Module $module = null, bool $exact = true): ?Stat
 	{
 		if ($module === null) {
 			return null;
 		}
+
 		if ($exact) {
 			return $module->getStats()[strtolower($name)] ?? null;
-		} else {
-			$match = null;
-			foreach ($module->getStats() as $stat) {
-				if ($match === null or strlen($match) > strlen($stat->getName()) or strlen($match) > strlen($stat->getDisplayName())) {
-					if (substr(strtolower($stat->getName()), 0, strlen($name)) === $name or substr(strtolower($stat->getDisplayName()), 0, strlen($name)) === $name) {
-						$match = $stat;
-					}
+		}
+
+		$match = null;
+		foreach ($module->getStats() as $stat) {
+			if ($match === null or strlen($match) > strlen($stat->getName()) or strlen($match) > strlen($stat->getDisplayName())) {
+				if (substr(strtolower($stat->getName()), 0, strlen($name)) === $name or substr(strtolower($stat->getDisplayName()), 0, strlen($name)) === $name) {
+					$match = $stat;
 				}
 			}
-			return $match;
 		}
+		return $match;
 	}
 
-	private function initDatabase()
+	private function initDatabase(): void
 	{
 		$this->database = libasynql::create($this, $this->getConfig()->get("database"), ["mysql" => "mysql.sql"]);
 
@@ -144,7 +155,7 @@ class StatAPI extends PluginBase
 		$this->database->waitAll();
 	}
 
-	public function reload()
+	public function reload(): void
 	{
 		$this->database->executeSelect(Query::GET_MODULES, [], function (array $rows) {
 			$this->modules = [];
@@ -165,7 +176,7 @@ class StatAPI extends PluginBase
 		});
 	}
 
-	public function reloadAllData()
+	public function reloadAllData(): void
 	{
 		$this->database->executeSelect(Query::GET_DATA, [], function (array $rows) {
 			foreach ($this->modules as $module) {
@@ -196,7 +207,7 @@ class StatAPI extends PluginBase
 		return $this->database;
 	}
 
-	public function onDisable()
+	public function onDisable(): void
 	{
 		if (isset($this->database)) {
 			$this->database->close();
@@ -206,7 +217,7 @@ class StatAPI extends PluginBase
 	/**
 	 * @param int $version
 	 */
-	private function loadConfig(int $version)
+	private function loadConfig(int $version): void
 	{
 		$this->saveDefaultConfig();
 		if ($this->getConfig()->get("version") !== $version) {
