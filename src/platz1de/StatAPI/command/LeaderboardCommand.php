@@ -69,7 +69,7 @@ class LeaderboardCommand extends CommandBase
 
 		$position = ($page - 1) * 10;
 		foreach (array_slice($data, (min(ceil(count($data) / 10), max(1, $page)) - 1) * 10, 10) as $player) {
-			$sender->sendMessage(StatAPI::getPrefix() . str_replace(["{position}", "{player}", "{score}"], [++$position, $player, $stat->getFormatedScore($player)], StatAPI::getInstance()->getConfig()->get("leaderboard-list", "§1#{position} §r- §e{player}§r: {score}")));
+			$sender->sendMessage(str_replace(["{position}", "{player}", "{score}"], [++$position, $player, $stat->getFormatedScore($player)], StatAPI::getInstance()->getConfig()->get("leaderboard-list", "§1#{position} §r- §e{player}§r: {score}")));
 		}
 	}
 }

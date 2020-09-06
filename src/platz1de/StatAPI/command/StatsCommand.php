@@ -59,7 +59,7 @@ class StatsCommand extends CommandBase
 				if($position === false){
 					$position = count($stat->getData());
 				}
-				$sender->sendMessage(StatAPI::getPrefix() . str_replace(["{stat}", "{value}", "{position}"], [$stat->getDisplayName(), $stat->getFormatedScore($player), ++$position], StatAPI::getInstance()->getConfig()->get("stats-list", "§e{stat}: §r{value} §7(#{position})")));
+				$sender->sendMessage(str_replace(["{stat}", "{value}", "{position}"], [$stat->getDisplayName(), $stat->getFormatedScore($player), ++$position], StatAPI::getInstance()->getConfig()->get("stats-list", "§e{stat}: §r{value} §7(#{position})")));
 			}
 		}
 	}
