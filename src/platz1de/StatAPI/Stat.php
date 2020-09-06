@@ -119,7 +119,7 @@ class Stat
 
 	/**
 	 * @param int $type
-	 * @param bool $save
+	 * @param bool $save internal usage, better don't use this yourself
 	 */
 	public function setType(int $type, bool $save = true): void
 	{
@@ -139,7 +139,7 @@ class Stat
 
 	/**
 	 * @param int $displayType
-	 * @param bool $save
+	 * @param bool $save internal usage, better don't use this yourself
 	 */
 	public function setDisplayType(int $displayType, bool $save = true): void
 	{
@@ -159,7 +159,7 @@ class Stat
 
 	/**
 	 * @param string $default
-	 * @param bool $save
+	 * @param bool $save internal usage, better don't use this yourself
 	 */
 	public function setDefault(string $default, bool $save = true): void
 	{
@@ -179,7 +179,7 @@ class Stat
 
 	/**
 	 * @param string $displayName
-	 * @param bool $save
+	 * @param bool $save internal usage, better don't use this yourself
 	 */
 	public function setDisplayName(string $displayName, bool $save = true): void
 	{
@@ -199,7 +199,7 @@ class Stat
 
 	/**
 	 * @param bool $visible
-	 * @param bool $save
+	 * @param bool $save internal usage, better don't use this yourself
 	 */
 	public function setVisible(bool $visible, bool $save = true): void
 	{
@@ -302,7 +302,7 @@ class Stat
 	 * Ignores type
 	 * @param string $player
 	 * @param string $score
-	 * @param bool $save
+	 * @param bool $save internal usage, better don't use this yourself
 	 * @see changeScore for changing the Score
 	 */
 	public function setScore(string $player, string $score, bool $save = true): void
@@ -320,7 +320,7 @@ class Stat
 
 	/**
 	 * @param string $player
-	 * @param bool $save
+	 * @param bool $save internal usage, better don't use this yourself
 	 */
 	public function resetScore(string $player, bool $save = true): void
 	{
@@ -333,7 +333,7 @@ class Stat
 	}
 
 	/**
-	 * @param bool $save
+	 * @param bool $save internal usage, better don't use this yourself
 	 */
 	public function resetData(bool $save = true): void
 	{

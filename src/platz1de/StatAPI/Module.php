@@ -71,7 +71,7 @@ class Module
 
 	/**
 	 * @param string $displayName
-	 * @param bool $save
+	 * @param bool $save internal usage, better don't use this yourself
 	 */
 	public function setDisplayName(string $displayName, bool $save = true): void
 	{
@@ -91,7 +91,7 @@ class Module
 
 	/**
 	 * @param bool $visible
-	 * @param bool $save
+	 * @param bool $save internal usage, better don't use this yourself
 	 */
 	public function setVisible(bool $visible, bool $save = true): void
 	{
