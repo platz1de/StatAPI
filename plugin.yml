@@ -4,17 +4,11 @@ api: 4.0.0
 version: 1.1.0
 author: platz1de
 permissions:
-  statapi:
+  statapi.command.stats:
+    default: true
+  statapi.command.leaderboard:
+    default: true
+  statapi.command.statadmin:
     default: op
-    children:
-      statapi.command:
-        default: op
-        children:
-          statapi.command.stats:
-            default: true
-          statapi.command.leaderboard:
-            default: true
-          statapi.command.statadmin:
-            default: op
-      statapi.seeall:
-        default: op
+  statapi.seeall:
+    default: op
