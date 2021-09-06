@@ -32,12 +32,12 @@ class LeaderboardCommand extends CommandBase
 		}
 
 		$stat = null;
-		$module = $this->getPlugin()->getDefaultModule();
+		$module = $this->getOwningPlugin()->getDefaultModule();
 		$page = 1;
 		if (count($args) > 0) {
 			//get module first
 			for ($a = 0; $a < min(3, count($args)); $a++) {
-				if (($m = $this->getPlugin()->getModule($args[$a], false)) instanceof Module) {
+				if (($m = $this->getOwningPlugin()->getModule($args[$a], false)) instanceof Module) {
 					$module = $m;
 					break;
 				}
@@ -45,7 +45,7 @@ class LeaderboardCommand extends CommandBase
 
 			for ($b = 0; $b < min(3, count($args)); $b++) {
 				if ($b !== $a) {
-					if (($s = $this->getPlugin()->getStat($args[$b], $module, false)) instanceof Stat) {
+					if (($s = $this->getOwningPlugin()->getStat($args[$b], $module, false)) instanceof Stat) {
 						$stat = $s;
 					} elseif (is_numeric($args[$b])) {
 						$page = $args[$b];

@@ -29,23 +29,23 @@ class StatsCommand extends CommandBase
 		}
 
 		$player = $sender->getName();
-		$module = $this->getPlugin()->getDefaultModule();
+		$module = $this->getOwningPlugin()->getDefaultModule();
 		if (count($args) > 0) {
-			if (($m = $this->getPlugin()->getModule($args[0], false)) instanceof Module) {
+			if (($m = $this->getOwningPlugin()->getModule($args[0], false)) instanceof Module) {
 				$module = $m;
 				if (count($args) > 1) {
 					$player = $args[1];
 				}
 			} else {
 				$player = $args[0];
-				if ((count($args) > 1) && ($m = $this->getPlugin()->getModule($args[1], false)) instanceof Module) {
+				if ((count($args) > 1) && ($m = $this->getOwningPlugin()->getModule($args[1], false)) instanceof Module) {
 					$module = $m;
 				}
 			}
 		}
 
 		if (!$module->isVisible() && !$sender->hasPermission("statpi.seeall")) {
-			$module = $this->getPlugin()->getDefaultModule();
+			$module = $this->getOwningPlugin()->getDefaultModule();
 		}
 
 		$sender->sendMessage(StatAPI::getPrefix() . str_replace(["{module}", "{player}"], [$module->getDisplayName(), $player], StatAPI::getInstance()->getConfig()->get("stats-header", "§e{player}'s stats in {module}:")));
