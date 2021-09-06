@@ -26,7 +26,7 @@ class StatAPI extends PluginBase
 		$this->initDatabase();
 		$this->reload();
 
-		$this->getScheduler()->scheduleRepeatingTask(new ClosureTask(function (int $currenttick): void {
+		$this->getScheduler()->scheduleRepeatingTask(new ClosureTask(function (): void {
 			$this->reload();
 		}), $this->getConfig()->get("reload-duration", 1200));
 

@@ -3,11 +3,11 @@
 namespace platz1de\StatAPI\command;
 
 use pocketmine\command\Command;
-use pocketmine\command\PluginIdentifiableCommand;
 use pocketmine\plugin\Plugin;
 use platz1de\StatAPI\StatAPI;
+use pocketmine\plugin\PluginOwned;
 
-abstract class CommandBase extends Command implements PluginIdentifiableCommand
+abstract class CommandBase extends Command implements PluginOwned
 {
 	/**
 	 * CommandBase constructor.
@@ -21,7 +21,7 @@ abstract class CommandBase extends Command implements PluginIdentifiableCommand
 	/**
 	 * @return StatAPI
 	 */
-	public function getPlugin(): Plugin
+	public function getOwningPlugin(): Plugin
 	{
 		return StatAPI::getInstance();
 	}
