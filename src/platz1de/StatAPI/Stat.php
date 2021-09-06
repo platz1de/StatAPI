@@ -26,74 +26,46 @@ class Stat
 		return StatAPI::getInstance()->getStat($name, $module);
 	}
 
-	const TYPE_UNKNOWN = 0; //sets the score; no leaderboard available
-	const TYPE_INCREASE = 1; //adds score to current score; highest score shown on top of the leaderboard
-	const TYPE_DECREASE = 2; //subtracts score from current score; lowest score shown on top of the leaderboard
-	const TYPE_HIGHEST = 3; //highest score saved; highest score shown on top of the leaderboard
-	const TYPE_LOWEST = 4; //lowest score saved; lowest score shown on top of the leaderboard
+	public const TYPE_UNKNOWN = 0; //sets the score; no leaderboard available
+	public const TYPE_INCREASE = 1; //adds score to current score; highest score shown on top of the leaderboard
+	public const TYPE_DECREASE = 2; //subtracts score from current score; lowest score shown on top of the leaderboard
+	public const TYPE_HIGHEST = 3; //highest score saved; highest score shown on top of the leaderboard
+	public const TYPE_LOWEST = 4; //lowest score saved; lowest score shown on top of the leaderboard
 
 	//These don't have real values
-	const TYPE_RATIO = 10; //divides one stat by another stat; stats saved in default value and split by '//'; stats have to be from the same module; for example 'kills//deaths'; ignores displaytype
+	public const TYPE_RATIO = 10; //divides one stat by another stat; stats saved in default value and split by '//'; stats have to be from the same module; for example 'kills//deaths'; ignores displaytype
 
-	const DISPLAY_RAW = 0; //shows the score
-	const DISPLAY_LARGE = 1; //converts the score into a large number Format (eg. 8M, 21k...)
-	const DISPLAY_DATE = 2; //converts the score into a date; in seconds, see time()
-	const DISPLAY_DURATION = 3; //converts the score into a duration; in seconds
-	const DISPLAY_DURATION_MICRO = 4; //converts the score into a duration; in microseconds
-	const DISPLAY_DURATION_MINUTES = 5; //converts the score into a duration; in minutes
+	public const DISPLAY_RAW = 0; //shows the score
+	public const DISPLAY_LARGE = 1; //converts the score into a large number Format (eg. 8M, 21k...)
+	public const DISPLAY_DATE = 2; //converts the score into a date; in seconds, see time()
+	public const DISPLAY_DURATION = 3; //converts the score into a duration; in seconds
+	public const DISPLAY_DURATION_MICRO = 4; //converts the score into a duration; in microseconds
+	public const DISPLAY_DURATION_MINUTES = 5; //converts the score into a duration; in minutes
 
-	/**
-	 * @var string
-	 */
-	private $name;
-	/**
-	 * @var Module
-	 */
-	private $module;
-	/**
-	 * @var int
-	 */
-	private $type;
-	/**
-	 * @var int
-	 */
-	private $displayType;
-	/**
-	 * @var string
-	 */
-	private $default;
-	/**
-	 * @var string
-	 */
-	private $displayName;
-	/**
-	 * @var bool
-	 */
-	private $visible;
 	/**
 	 * @var string[]
 	 */
-	private $data = [];
+	private array $data = [];
 
 	/**
 	 * Module constructor.
 	 * @param string $name
 	 * @param Module $module
-	 * @param int $type
-	 * @param int $displayType
+	 * @param int    $type
+	 * @param int    $displayType
 	 * @param string $default
 	 * @param string $displayName
-	 * @param bool $visible
+	 * @param bool   $visible
 	 */
-	public function __construct(string $name, Module $module, int $type = self::TYPE_UNKNOWN, int $displayType = self::DISPLAY_RAW, string $default = "0", string $displayName = "", bool $visible = true)
+	public function __construct(
+		private string $name,
+		private Module $module,
+		private int    $type = self::TYPE_UNKNOWN,
+		private int    $displayType = self::DISPLAY_RAW,
+		private string $default = "0",
+		private string $displayName = "",
+		private bool   $visible = true)
 	{
-		$this->name = $name;
-		$this->module = $module;
-		$this->type = $type;
-		$this->displayType = $displayType;
-		$this->default = $default;
-		$this->displayName = $displayName;
-		$this->visible = $visible;
 	}
 
 	/**
@@ -121,12 +93,12 @@ class Stat
 	}
 
 	/**
-	 * @param int $type
+	 * @param int  $type
 	 * @param bool $save internal usage, better don't use this yourself
 	 */
 	public function setType(int $type, bool $save = true): void
 	{
-		if ($save and $type !== $this->type) {
+		if ($save && $type !== $this->type) {
 			StatAPI::getInstance()->getDatabase()->executeChange(Query::SET_STAT_TYPE, ["stat" => $this->getName(), "module" => $this->getModule()->getName(), "type" => $type]);
 		}
 		$this->type = $type;
@@ -141,12 +113,12 @@ class Stat
 	}
 
 	/**
-	 * @param int $displayType
+	 * @param int  $displayType
 	 * @param bool $save internal usage, better don't use this yourself
 	 */
 	public function setDisplayType(int $displayType, bool $save = true): void
 	{
-		if ($save and $displayType !== $this->displayType) {
+		if ($save && $displayType !== $this->displayType) {
 			StatAPI::getInstance()->getDatabase()->executeChange(Query::SET_STAT_DISPLAYTYPE, ["stat" => $this->getName(), "module" => $this->getModule()->getName(), "displayType" => $displayType]);
 		}
 		$this->displayType = $displayType;
@@ -162,11 +134,11 @@ class Stat
 
 	/**
 	 * @param string $default
-	 * @param bool $save internal usage, better don't use this yourself
+	 * @param bool   $save internal usage, better don't use this yourself
 	 */
 	public function setDefault(string $default, bool $save = true): void
 	{
-		if ($save and $default !== $this->default) {
+		if ($save && $default !== $this->default) {
 			StatAPI::getInstance()->getDatabase()->executeChange(Query::SET_STAT_DEFAULT, ["stat" => $this->getName(), "module" => $this->getModule()->getName(), "default" => $default]);
 		}
 		$this->default = $default;
@@ -182,11 +154,11 @@ class Stat
 
 	/**
 	 * @param string $displayName
-	 * @param bool $save internal usage, better don't use this yourself
+	 * @param bool   $save internal usage, better don't use this yourself
 	 */
 	public function setDisplayName(string $displayName, bool $save = true): void
 	{
-		if ($save and $displayName !== $this->displayName) {
+		if ($save && $displayName !== $this->displayName) {
 			StatAPI::getInstance()->getDatabase()->executeChange(Query::SET_STAT_DISPLAYNAME, ["stat" => $this->getName(), "module" => $this->getModule()->getName(), "displayName" => $displayName]);
 		}
 		$this->displayName = $displayName;
@@ -206,7 +178,7 @@ class Stat
 	 */
 	public function setVisible(bool $visible, bool $save = true): void
 	{
-		if ($save and $visible !== $this->visible) {
+		if ($save && $visible !== $this->visible) {
 			StatAPI::getInstance()->getDatabase()->executeChange(Query::SET_STAT_VISIBILITY, ["stat" => $this->getName(), "module" => $this->getModule()->getName(), "visible" => $visible]);
 		}
 		$this->visible = $visible;
@@ -229,7 +201,7 @@ class Stat
 	 */
 	public function getScore(string $player): string
 	{
-		if($this->getType() === self::TYPE_RATIO){
+		if ($this->getType() === self::TYPE_RATIO) {
 			return $this->data[strtolower($player)] ?? "0"; //default is used for saving the used stats
 		}
 
@@ -244,7 +216,7 @@ class Stat
 	{
 		$score = $this->getScore($player);
 
-		if (!is_numeric($score) or $this->getType() === self::TYPE_RATIO) {
+		if (!is_numeric($score) || $this->getType() === self::TYPE_RATIO) {
 			return $score;
 		}
 
@@ -284,7 +256,7 @@ class Stat
 	 */
 	public function changeScore(string $player, string $score): void
 	{
-		if ($this->type !== self::TYPE_UNKNOWN and !is_numeric($score)) {
+		if ($this->type !== self::TYPE_UNKNOWN && !is_numeric($score)) {
 			throw new InvalidArgumentException("Non-numerical score for numerical Stat given");
 		}
 
@@ -317,16 +289,16 @@ class Stat
 	 * Ignores type
 	 * @param string $player
 	 * @param string $score
-	 * @param bool $save internal usage, better don't use this yourself
+	 * @param bool   $save internal usage, better don't use this yourself
 	 * @see changeScore for changing the Score
 	 */
 	public function setScore(string $player, string $score, bool $save = true): void
 	{
-		if ($this->type !== self::TYPE_UNKNOWN and !is_numeric($score)) {
+		if ($this->type !== self::TYPE_UNKNOWN && !is_numeric($score)) {
 			throw new InvalidArgumentException("Non-numerical score for numerical Stat given");
 		}
 
-		if ($save and $this->getDisplayType() !== self::TYPE_RATIO) { //we don't have to save values for these
+		if ($save && $this->getDisplayType() !== self::TYPE_RATIO) { //we don't have to save values for these
 			StatAPI::getInstance()->getDatabase()->executeChange(Query::SET_SCORE, ["player" => $player, "stat" => $this->getName(), "module" => $this->getModule()->getName(), "score" => $score]);
 		}
 
@@ -335,7 +307,7 @@ class Stat
 
 	/**
 	 * @param string $player
-	 * @param bool $save internal usage, better don't use this yourself
+	 * @param bool   $save internal usage, better don't use this yourself
 	 */
 	public function resetScore(string $player, bool $save = true): void
 	{

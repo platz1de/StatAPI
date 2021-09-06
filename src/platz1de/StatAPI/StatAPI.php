@@ -12,18 +12,12 @@ use platz1de\StatAPI\command\StatsCommand;
 
 class StatAPI extends PluginBase
 {
-	/**
-	 * @var StatAPI
-	 */
-	private static $instance;
-	/**
-	 * @var DataConnector
-	 */
-	private $database;
+	private static StatAPI $instance;
+	private DataConnector $database;
 	/**
 	 * @var Module[]
 	 */
-	private $modules = [];
+	private array $modules = [];
 
 	public function onLoad(): void
 	{
@@ -58,7 +52,7 @@ class StatAPI extends PluginBase
 	/**
 	 * @param Module $module
 	 * @internal use Module::get instead
-	 * @see Module::get
+	 * @see      Module::get
 	 */
 	public function registerModule(Module $module): void
 	{
@@ -84,7 +78,7 @@ class StatAPI extends PluginBase
 
 	/**
 	 * @param string $name
-	 * @param bool $exact
+	 * @param bool   $exact
 	 * @return Module|null
 	 *
 	 * Only returns Module if it exists
@@ -98,8 +92,8 @@ class StatAPI extends PluginBase
 
 		$match = null;
 		foreach ($this->modules as $module) {
-			if ($match === null or strlen($match) > strlen($module->getName()) or strlen($match) > strlen($module->getDisplayName())) {
-				if (substr(strtolower($module->getName()), 0, strlen($name)) === strtolower($name) or substr(strtolower($module->getDisplayName()), 0, strlen($name)) === strtolower($name)) {
+			if ($match === null || strlen($match) > strlen($module->getName()) || strlen($match) > strlen($module->getDisplayName())) {
+				if (str_starts_with(strtolower($module->getName()), strtolower($name)) || str_starts_with(strtolower($module->getDisplayName()), strtolower($name))) {
 					$match = $module;
 				}
 			}
@@ -116,9 +110,9 @@ class StatAPI extends PluginBase
 	}
 
 	/**
-	 * @param string $name
+	 * @param string      $name
 	 * @param null|Module $module
-	 * @param bool $exact
+	 * @param bool        $exact
 	 * @return Stat|null
 	 *
 	 * Only returns Stat if it exists
@@ -136,8 +130,8 @@ class StatAPI extends PluginBase
 
 		$match = null;
 		foreach ($module->getStats() as $stat) {
-			if ($match === null or strlen($match) > strlen($stat->getName()) or strlen($match) > strlen($stat->getDisplayName())) {
-				if (substr(strtolower($stat->getName()), 0, strlen($name)) === strtolower($name) or substr(strtolower($stat->getDisplayName()), 0, strlen($name)) === strtolower($name)) {
+			if ($match === null || strlen($match) > strlen($stat->getName()) || strlen($match) > strlen($stat->getDisplayName())) {
+				if (str_starts_with(strtolower($stat->getName()), strtolower($name)) || str_starts_with(strtolower($stat->getDisplayName()), strtolower($name))) {
 					$match = $stat;
 				}
 			}
@@ -196,11 +190,11 @@ class StatAPI extends PluginBase
 						$first = $this->getStat(explode("//", $stat->getDefault())[0], $module);
 						$second = $this->getStat(explode("//", $stat->getDefault())[1] ?? "", $module);
 
-						if ($first instanceof Stat and $first->getType() !== Stat::TYPE_RATIO and $second instanceof Stat and $second->getType() !== Stat::TYPE_RATIO) { //Don't allow recursive ratio stat, so we don't have to deal with the possible problems
+						if ($first instanceof Stat && $second instanceof Stat && $first->getType() !== Stat::TYPE_RATIO && $second->getType() !== Stat::TYPE_RATIO) { //Don't allow recursive ratio stat, so we don't have to deal with the possible problems
 							foreach (array_unique(array_merge(array_keys($first->getData()), array_keys($second->getData()))) as $player) {
-								$stat->setScore($player, ((int)$first->getScore($player)) / max(1, (int)$second->getScore($player)), false);
+								$stat->setScore($player, ((int) $first->getScore($player)) / max(1, (int) $second->getScore($player)), false);
 							}
-						}else{
+						} else {
 							$this->getLogger()->warning("Couldn't find stats for ratio-Stat '" . $stat->getName() . "' (" . $stat->getDefault() . ")");
 						}
 					}

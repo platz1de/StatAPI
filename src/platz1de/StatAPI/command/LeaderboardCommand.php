@@ -24,9 +24,8 @@ class LeaderboardCommand extends CommandBase
 	 * @param CommandSender $sender
 	 * @param string        $commandLabel
 	 * @param array         $args
-	 * @return mixed|void
 	 */
-	public function execute(CommandSender $sender, string $commandLabel, array $args)
+	public function execute(CommandSender $sender, string $commandLabel, array $args): void
 	{
 		if (!$this->testPermission($sender)) {
 			return;

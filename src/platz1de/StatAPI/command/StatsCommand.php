@@ -21,9 +21,8 @@ class StatsCommand extends CommandBase
 	 * @param CommandSender $sender
 	 * @param string        $commandLabel
 	 * @param array         $args
-	 * @return mixed|void
 	 */
-	public function execute(CommandSender $sender, string $commandLabel, array $args)
+	public function execute(CommandSender $sender, string $commandLabel, array $args): void
 	{
 		if (!$this->testPermission($sender)) {
 			return;
@@ -39,24 +38,22 @@ class StatsCommand extends CommandBase
 				}
 			} else {
 				$player = $args[0];
-				if (count($args) > 1) {
-					if (($m = $this->getPlugin()->getModule($args[1], false)) instanceof Module) {
-						$module = $m;
-					}
+				if ((count($args) > 1) && ($m = $this->getPlugin()->getModule($args[1], false)) instanceof Module) {
+					$module = $m;
 				}
 			}
 		}
 
-		if (!$module->isVisible() and !$sender->hasPermission("statpi.seeall")) {
+		if (!$module->isVisible() && !$sender->hasPermission("statpi.seeall")) {
 			$module = $this->getPlugin()->getDefaultModule();
 		}
 
 		$sender->sendMessage(StatAPI::getPrefix() . str_replace(["{module}", "{player}"], [$module->getDisplayName(), $player], StatAPI::getInstance()->getConfig()->get("stats-header", "§e{player}'s stats in {module}:")));
 
 		foreach ($module->getStats() as $stat) {
-			if ($stat->isVisible() or $sender->hasPermission("statpi.seeall")) {
-				$position = array_search(strtolower($player), array_keys($stat->getData()));
-				if($position === false){
+			if ($stat->isVisible() || $sender->hasPermission("statpi.seeall")) {
+				$position = array_search(strtolower($player), array_keys($stat->getData()), true);
+				if ($position === false) {
 					$position = count($stat->getData());
 				}
 				$sender->sendMessage(str_replace(["{stat}", "{value}", "{position}"], [$stat->getDisplayName(), $stat->getFormatedScore($player), ++$position], StatAPI::getInstance()->getConfig()->get("stats-list", "§e{stat}: §r{value} §7(#{position})")));

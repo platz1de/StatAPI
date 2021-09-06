@@ -23,28 +23,19 @@ class Module
 		return StatAPI::getInstance()->getModule($name);
 	}
 
-	/**
-	 * @var string
-	 */
-	private $name;
-	/**
-	 * @var string
-	 */
-	private $displayName;
-	/**
-	 * @var bool
-	 */
-	private $visible;
+	private string $name;
+	private string $displayName;
+	private bool $visible;
 	/**
 	 * @var Stat[]
 	 */
-	private $stats = [];
+	private array $stats = [];
 
 	/**
 	 * Module constructor.
 	 * @param string $name
 	 * @param string $displayName
-	 * @param bool $visible
+	 * @param bool   $visible
 	 */
 	public function __construct(string $name, string $displayName = "", bool $visible = true)
 	{
@@ -71,7 +62,7 @@ class Module
 
 	/**
 	 * @param string $displayName
-	 * @param bool $save internal usage, better don't use this yourself
+	 * @param bool   $save internal usage, better don't use this yourself
 	 */
 	public function setDisplayName(string $displayName, bool $save = true): void
 	{
@@ -126,14 +117,6 @@ class Module
 		if (isset($this->stats[strtolower($stat->getName())])) {
 			unset($this->stats[strtolower($stat->getName())]);
 		}
-	}
-
-	/**
-	 * @internal
-	 */
-	public function resetStats(): void
-	{
-		$this->stats = [];
 	}
 
 	public function __toString()
