@@ -45,14 +45,14 @@ class StatsCommand extends CommandBase
 			}
 		}
 
-		if (!$module->isVisible() && !$sender->hasPermission("statpi.seeall")) {
+		if (!$module->isVisible() && !$sender->hasPermission("statapi.seeall")) {
 			$module = $this->getOwningPlugin()->getDefaultModule();
 		}
 
 		$sender->sendMessage(StatAPI::getPrefix() . str_replace(["{module}", "{player}"], [$module->getDisplayName(), $player], StatAPI::getInstance()->getConfig()->get("stats-header", "§e{player}'s stats in {module}:")));
 
 		foreach ($module->getStats() as $stat) {
-			if ($stat->isVisible() || $sender->hasPermission("statpi.seeall")) {
+			if ($stat->isVisible() || $sender->hasPermission("statapi.seeall")) {
 				$position = array_search(strtolower($player), array_keys($stat->getData()), true);
 				if ($position === false) {
 					$position = count($stat->getData());
