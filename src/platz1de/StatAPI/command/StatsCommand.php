@@ -2,6 +2,7 @@
 
 namespace platz1de\StatAPI\command;
 
+use platz1de\StatAPI\Stat;
 use pocketmine\command\CommandSender;
 use platz1de\StatAPI\Module;
 use platz1de\StatAPI\StatAPI;
@@ -56,7 +57,11 @@ class StatsCommand extends CommandBase
 				if ($position === false) {
 					$position = count($stat->getData());
 				}
-				$sender->sendMessage(str_replace(["{stat}", "{value}", "{position}"], [$stat->getDisplayName(), $stat->getFormatedScore($player), ++$position], StatAPI::getInstance()->getConfig()->get("stats-list", "§e{stat}: §r{value} §7(#{position})")));
+				if($stat->getType() === Stat::TYPE_UNKNOWN){
+					$sender->sendMessage(str_replace(["{stat}", "{value}"], [$stat->getDisplayName(), $stat->getFormatedScore($player), ++$position], StatAPI::getInstance()->getConfig()->get("stats-list-no-position", "§e{stat}: §r{value}")));
+				}else{
+					$sender->sendMessage(str_replace(["{stat}", "{value}", "{position}"], [$stat->getDisplayName(), $stat->getFormatedScore($player), ++$position], StatAPI::getInstance()->getConfig()->get("stats-list", "§e{stat}: §r{value} §7(#{position})")));
+				}
 			}
 		}
 	}

@@ -54,7 +54,7 @@ class LeaderboardCommand extends CommandBase
 			}
 		}
 
-		if ($stat === null) {
+		if ($stat === null || $stat->getType() === Stat::TYPE_UNKNOWN) {
 			$sender->sendMessage($this->getUsage());
 			return;
 		}

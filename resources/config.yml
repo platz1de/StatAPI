@@ -42,6 +42,9 @@ stats-header: "§e{player}'s stats in {module}:"
 #Args: {stat} {value} {position}
 stats-list: "§e{stat}: §r{value} §7(#{position})"
 
+#Args: {stat} {value}
+stats-list-no-position: "§e{stat}: §r{value}"
+
 #Args: {module} {stat} {page} {pages}
 leaderboard-header: "§eLeaderboard of {module} - {stat}: §7[Page {page}/{pages}]"
 
