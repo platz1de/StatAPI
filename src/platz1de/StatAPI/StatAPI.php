@@ -194,11 +194,7 @@ class StatAPI extends PluginBase
 	public function reloadAllData(): void
 	{
 		$this->database->executeSelect(Query::GET_DATA, [], function (array $rows) {
-			foreach ($this->modules as $module) {
-				foreach ($module->getStats() as $stat) {
-					$stat->resetData(false);
-				}
-			}
+			//Data rows will never get removed from cache to allow non-saving stat constructs
 			foreach ($rows as $row) {
 				$stat = $this->getStat($row["stat"], $this->getModule($row["module"]));
 				if ($stat instanceof Stat) {

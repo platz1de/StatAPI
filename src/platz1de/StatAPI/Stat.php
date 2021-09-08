@@ -306,20 +306,6 @@ class Stat
 	}
 
 	/**
-	 * @param string $player
-	 * @param bool   $save internal usage, better don't use this yourself
-	 */
-	public function resetScore(string $player, bool $save = true): void
-	{
-		if ($save) {
-			StatAPI::getInstance()->getDatabase()->executeChange(Query::REMOVE_SCORE, ["stat" => $this->getName(), "module" => $this->getModule()->getName(), "player" => $player]);
-		}
-		if (isset($this->data[$player])) {
-			unset($this->data[$player]);
-		}
-	}
-
-	/**
 	 * @param bool $save internal usage, better don't use this yourself
 	 */
 	public function resetData(bool $save = true): void
