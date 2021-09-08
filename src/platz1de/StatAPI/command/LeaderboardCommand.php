@@ -54,7 +54,7 @@ class LeaderboardCommand extends CommandBase
 			}
 		}
 
-		if ($stat === null || $stat->getType() === Stat::TYPE_UNKNOWN || ((!$stat->isVisible() || !$module->isVisible()) && !$sender->hasPermission("statapi.seeall"))) {
+		if ($stat === null || $stat->getType() === Stat::TYPE_UNKNOWN || !(($stat->isVisible() && $module->isVisible()) || $sender->hasPermission("statapi.seeall"))) {
 			$sender->sendMessage($this->getUsage());
 			return;
 		}

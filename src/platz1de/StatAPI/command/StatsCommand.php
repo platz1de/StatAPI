@@ -45,7 +45,7 @@ class StatsCommand extends CommandBase
 			}
 		}
 
-		if (!$module->isVisible() && !$sender->hasPermission("statapi.seeall")) {
+		if ($module->isVisible() || $sender->hasPermission("statapi.seeall")) {
 			$module = $this->getOwningPlugin()->getDefaultModule();
 		}
 
