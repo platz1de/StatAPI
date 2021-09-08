@@ -152,18 +152,39 @@ class StatAPI extends PluginBase
 	public function reload(): void
 	{
 		$this->database->executeSelect(Query::GET_MODULES, [], function (array $rows) {
-			$this->modules = [];
+			$registered = $this->modules;
 			foreach ($rows as $row) {
-				$this->registerModule(new Module($row["name"], $row["displayName"] ?? "", $row["visible"] ?? true));
+				if (($m = $this->getModule($row["name"])) instanceof Module) {
+					$m->setDisplayName($row["displayName"] ?? "", false);
+					$m->setVisible($row["visible"] ?? true, false);
+					unset($registered[$row["name"]]);
+				} else {
+					$this->registerModule(new Module($row["name"], $row["displayName"] ?? "", $row["visible"] ?? true));
+				}
+			}
+			foreach ($registered as $remove) {
+				$this->unregisterModule($remove);
 			}
 			$this->database->executeSelect(Query::GET_STATS, [], function (array $rows) {
-				$pos = 0;
+				$registered = array_map(static function (Module $m): array { return $m->getStats(); }, $this->modules);
 				foreach ($rows as $row) {
 					if (($module = $this->getModule($row["module"])) instanceof Module) {
-						$module->addStat(new Stat($row["name"], $module, $row["type"] ?? 0, $row["displayType"] ?? 0, $row["defaultValue"] ?? "0", $row["displayName"] ?? "", $row["visible"] ?? true));
+						if (($s = $this->getStat($row["name"], $module)) instanceof Stat) {
+							$s->setType($row["type"] ?? 0, false);
+							$s->setDisplayType($row["displayType"] ?? 0, false);
+							$s->setDefault($row["defaultValue"] ?? "0", false);
+							$s->setDisplayName($row["displayName"] ?? "", false);
+							$s->setVisible($row["visible"] ?? true, false);
+							unset($registered[strtolower($row["module"])][strtolower($row["name"])]);
+						} else {
+							$module->addStat(new Stat($row["name"], $module, $row["type"] ?? 0, $row["displayType"] ?? 0, $row["defaultValue"] ?? "0", $row["displayName"] ?? "", $row["visible"] ?? true));
+						}
 					}
-					//clear holes in positions
-					$this->getDatabase()->executeChange(Query::SET_STAT_POSITION, ["stat" => $row["name"], "module" => $row["module"], "position" => ++$pos]);
+				}
+				foreach ($registered as $m => $i) {
+					foreach ($i as $remove) {
+						$this->getModule($m)?->removeStat($remove);
+					}
 				}
 				$this->reloadAllData();
 			});
